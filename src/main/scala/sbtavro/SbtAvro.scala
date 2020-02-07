@@ -36,7 +36,7 @@ object SbtAvro extends AutoPlugin {
     val generate = TaskKey[Seq[File]]("generate", "Generate the Java sources for the Avro files.")
 
     lazy val avroSettings: Seq[Setting[_]] = inConfig(AvroConfig)(Seq[Setting[_]](
-      sourceDirectory := (sourceDirectory in Compile).value / "avro",
+      sourceDirectories := Seq((sourceDirectory in Compile).value / "avro"),
       javaSource := (sourceManaged in Compile).value / "compiled_avro",
       stringType := "CharSequence",
       fieldVisibility := "public_deprecated",
@@ -139,18 +139,21 @@ object SbtAvro extends AutoPlugin {
 
   private def sourceGeneratorTask = Def.task {
     val out = streams.value
-    val srcDir = (sourceDirectory in AvroConfig).value
+    val srcDirs = (sourceDirectories in AvroConfig).value
     val javaSrc = (javaSource in AvroConfig).value
     val strType = stringType.value
     val fieldVis = fieldVisibility.value
     val enbDecimal = enableDecimalLogicalType.value
     val useNs = useNamespace.value
-    val cachedCompile = FileFunction.cached(out.cacheDirectory / "avro",
+    srcDirs.flatMap(srcDir => {
+      val cachedCompile = FileFunction.cached(out.cacheDirectory / "avro",
       inStyle = FilesInfo.lastModified,
       outStyle = FilesInfo.exists) { (in: Set[File]) =>
         compile(srcDir, javaSrc, out.log, strType, fieldVis, enbDecimal, useNs)
       }
-    cachedCompile((srcDir ** "*.av*").get.toSet).toSeq
+      
+      cachedCompile((srcDir ** "*.av*").get.toSet).toSeq
+    })
   }
 
 }
