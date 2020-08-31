@@ -28,5 +28,3 @@ bintrayOrganization := Some("sbt")
 bintrayRepository := "sbt-plugin-releases"
 bintrayPackage := name.value
 bintrayReleaseOnPublish := false
-
-enablePlugins(SbtPlugin)
