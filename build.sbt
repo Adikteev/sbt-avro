@@ -1,15 +1,15 @@
-name := "sbt-avro-1.9"
+name := "sbt-avro-2.0"
 organization := "com.cavorite"
 description := "Sbt plugin for compiling Avro sources"
 homepage := Some(url("https://github.com/sbt/sbt-avro"))
 
-version := "1.1.10-SNAPSHOT"
+version := "1.1.11-SNAPSHOT"
 
 sbtPlugin := true
 
 scalaVersion := appConfiguration.value.provider.scalaProvider.version
 scalacOptions in Compile ++= Seq("-deprecation")
-crossSbtVersions := Seq("0.13.18", "1.3.6")
+sbtVersion := "1.4.0"
 
 
 libraryDependencies ++= Seq(
