@@ -1,3 +1,6 @@
+
+import Keys.{publishTo, resolvers, _}
+
 name := "sbt-avro-2.0"
 organization := "com.cavorite"
 description := "Sbt plugin for compiling Avro sources"
@@ -7,10 +10,13 @@ version := "1.1.11-SNAPSHOT"
 
 sbtPlugin := true
 
-scalaVersion := appConfiguration.value.provider.scalaProvider.version
+scalaVersion := "2.12.12"
 scalacOptions in Compile ++= Seq("-deprecation")
 sbtVersion := "1.4.0"
 
+
+//publishArtifact in (Test, packageBin) := true
+//publishTo := Some("Ak Artifacts" at "s3://ak-artifacts/m2")
 
 libraryDependencies ++= Seq(
   "io.spray" %%  "spray-json" % "1.3.5",
